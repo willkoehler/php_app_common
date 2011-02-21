@@ -1,0 +1,290 @@
+<?
+
+class DBConnection extends mysqli
+{
+
+    //----------------------------------------------------------------------------------
+    //  DBConnection()
+    //
+    //   Constructor. Opens the MySQL database connection and checks for errors
+    //
+    //   NOTE: This connection will automatically be closed when the script that
+    //   created it ends
+    //
+    //  PARAMETERS:
+    //    host      - IP address / name of database server
+    //    user      - MySQL database username
+    //    pw        - MySQL database password
+    //    dbname    - name of database
+    //
+    //  RETURN: none
+    //-----------------------------------------------------------------------------------
+    function DBConnection($host, $user, $pw, $dbname)
+    {
+        // call base class constructor
+        parent::__construct($host, $user, $pw, $dbname);
+        // check for errors
+        if(mysqli_connect_error())
+        {
+            exit("<br>Error connecting to data.");
+        }
+    }
+
+
+    //----------------------------------------------------------------------------------
+    //  query()
+    //
+    //  This function is a wrapper around the mysqli query() function. It calls the mysqli
+    //  query function and then checks for and reports mysql errors
+    //
+    //  The MySQL error message will be sent to the user's browser and/or PHP error log
+    //  depending on settings in php.ini. For security reasons, we should *NEVER* send
+    //  MySQL error messages to the user's browser on a production server. By using this
+    //  function to check and report all MySQL errors we have a consistent interface that
+    //  allows us to send MySQL messages to the browser on the development servers and
+    //  send MySQL messages to the PHP error log on production servers
+    //
+    //  if $file/$line parameters are missing, they will default to "" and this function
+    //  will not check for mysql errors.
+    //
+    //  PARAMETERS:
+    //    sql   - SQL statement
+    //    file  - the file where this function was called (use __FILE__)
+    //    line  - the line # where this function was called (use __LINE__)
+    //
+    //  RETURN: TRUE on success or FALSE on failure. For SELECT, SHOW, DESCRIBE or
+    //          EXPLAIN mysqli_query() will return a mysqli result object.
+    //-----------------------------------------------------------------------------------
+    function query($sql, $file="", $line="")
+    {
+        $result = parent::query($sql);    // call base class query function
+        if($file!="" && $line!="" && $this->errno)
+        {
+            trigger_error("SQL Error [" . $this->errno . "] Line $line of " . basename($file) . " : " . $this->error, E_USER_WARNING);
+        }
+        return($result);
+    }
+
+
+    //----------------------------------------------------------------------------------
+    //  DBLookup()
+    //
+    //  Looks up a value in a table.
+    //
+    //  PARAMETERS:
+    //    field   - field to lookup
+    //    table   - table to lookup in
+    //    where   - where clause (without the WHERE) to filter results
+    //    default - value to return if matching row is found
+    //  
+    //  RETURN: value of "field" in row matching "where" or value of default parameter if
+    //          no row matched
+    //-----------------------------------------------------------------------------------
+    function DBLookup($field, $table, $where, $default="")
+    {
+        $rs = $this->query("SELECT $field FROM $table WHERE $where", __FILE__, __LINE__);
+        if(($record=$rs->fetch_array())==false)
+        {
+            return($default);
+        }
+        else
+        {
+            $rs->free();
+            return($record[$field]);
+        }
+    }
+
+
+    //----------------------------------------------------------------------------------
+    //  DBCount()
+    //
+    //  Count records in a table.
+    //
+    //  PARAMETERS:
+    //    table   - table to count records
+    //    where   - where clause (without the WHERE) to select which records to count
+    //  
+    //  RETURN: count of records
+    //-----------------------------------------------------------------------------------
+    function DBCount($table, $where)
+    {
+        $rs = $this->query("SELECT COUNT(*) AS Count FROM $table WHERE $where", __FILE__, __LINE__ );
+        if(($record=$rs->fetch_array())==false)
+        {
+            return(0);
+        }
+        else
+        {
+            $rs->free();
+            return($record['Count']);
+        }
+    }
+
+
+
+    //----------------------------------------------------------------------------------
+    //  DumpToJSArray()
+    //
+    //  This is used to build javascript arrays used for Ext.ComboBox lookup. The
+    //  columns of the recordset will be put into a n x m javascript array
+    //  The first column should be the key, the second column should be the string which
+    //  will appear in the combo box. Any additional columns are optional. The output
+    //  array looks like this:
+    //
+    //   [[1, 'Apples'],
+    //    [2, 'Oranges'],
+    //    [3, 'Peaches'],
+    //    [4, 'Plums']];
+    //
+    //  PARAMETERS:
+    //    String sql  - SQL statement that will produce an m-column dataset
+    //
+    //  RETURN: none (output will be echoed directly to HTML)
+    //-----------------------------------------------------------------------------------
+    function DumpToJSArray($sql)
+    {
+        $rs = $this->query($sql, __FILE__, __LINE__);
+        $result = "[";
+    // --- Loop through rows
+        while($row = $rs->fetch_row())
+        {
+        // --- Loop through columns in the row and add each column
+            $result .= "[";
+            foreach($row as $col)
+            {
+            // --- Add column value. Surround strings with quotes, leave numbers as is
+                if(is_numeric($col))
+                {
+                    $result .= "$col, ";
+                }
+                else
+                {
+                    $col = str_replace("\"", "'", $col);                // replace double quotes with single quotes
+                    $col = preg_replace("/(\r\n|[\r\n])/", " ", $col);  // change linebreaks to spaces
+                    $result .= "\"$col\", ";                            // surround string with double quotes
+                }
+            }
+            $result = substr($result, 0, -2);   // trim last ", " from string
+            $result .= "],\n";
+        }
+        if(strlen($result) > 1)
+        {
+            $result = substr($result, 0, -2);   // trim last ",\n" from string
+        }
+        $result .= "];\n";
+        $rs->free();
+        Echo $result;
+    }
+
+
+    //----------------------------------------------------------------------------------
+    //  RecordActivity()
+    //
+    //  This function records activity into the activity table.
+    //
+    //  PARAMETERS:
+    //    description   - description of activity (up to 150 characters)
+    //    referenceID   - optional reference ID (ex: ID of patient record that was modified)
+    //    siteID        - ID of Hospital, Plant, etc logged in.
+    //
+    //  RETURN: none
+    //-----------------------------------------------------------------------------------
+    function RecordActivity($description, $referenceID = 0, $siteID = 0)
+    {
+        if(strlen($description) > 150)
+        {
+        // limit description to 150 characters. The description field in the activity table is a varchar 150
+        // If description is longer than 150 characters MySQL will throw a 'Data too long for column' error.
+            $description = substr($description, 0, 150);
+        }
+        $this->query("INSERT INTO activity (Date, LoginTableID, SiteID, Description, ReferenceID, IPAddress) VALUES (
+                      NOW(), " . $_SESSION['loginTableID'] . ", $siteID, \"$description\", $referenceID, \"" . $_SERVER['REMOTE_ADDR'] . "\")",
+                      __FILE__, __LINE__);
+    }
+
+
+    //----------------------------------------------------------------------------------
+    //  RecordActivityIfOK()
+    //
+    //  This function records activity into the activity table if there are no database
+    //  errors (i.e. the last database operation did not have errors)
+    //
+    //  PARAMETERS:
+    //    description   - description of activity (up to 150 characters)
+    //    referenceID   - optional reference ID (ex: ID of patient record that was modified)
+    //    siteID        - ID of Hospital, Plant, etc logged in.
+    //
+    //  RETURN: none
+    //-----------------------------------------------------------------------------------
+    function RecordActivityIfOK($description, $referenceID = 0, $siteID = 0)
+    {
+        if($this->errno==0)
+        {
+            $this->RecordActivity($description, $referenceID, $siteID);
+        }
+    }
+
+}
+
+
+//----------------------------------------------------------------------------------
+//   PrepareDateForSQL()
+//
+//   This function takes a date and prepares it to be used in a SQL statement.
+//   Date is reformatted as YYYY-MM-DD and surrounded in double-quotes
+//   If the date is empty or invalid then NULL is returned.
+//
+//  PARAMETERS:
+//     date   - date value to be fixed up for use in a SQL statement
+//
+//  RETURN: fixed up date value
+//-----------------------------------------------------------------------------------
+function PrepareDateForSQL($date)
+{
+    if(strtoupper($date)=="NULL" || $date=="")
+    {
+        return("NULL");
+    }
+    else
+    {
+        if(strtotime($date)==false)
+        {
+            return("NULL");
+        }
+        else
+        {
+            return(chr(34) . date("Y-m-d", strtotime($date)) . chr(34));
+        }
+    }
+}
+
+
+//----------------------------------------------------------------------------------
+//   PrepareStringForSQL()
+//
+//   This function takes a string and prepares it to be used in a SQL statement.
+//   All double quotes in the string are replaced with single quotes, leading and
+//   trailing spaces are deleted, and the string is surrounded in double-quotes.
+//   If the string is empty then NULL is returned.
+//
+//  PARAMETERS:
+//     str   - string value to be fixed up for use in a SQL statement
+//
+//  RETURN: fixed up string value
+//-----------------------------------------------------------------------------------
+function PrepareStringForSQL($str)
+{
+    if(strtoupper($str)=="NULL" || $str=="")
+    {
+        return("NULL");
+    }
+    else
+    {
+    // --- add backslash prefix to all characters such as single quote, double quote,
+    // --- and backslash that need to be escaped in mysql queries
+        $str = addslashes($str);
+    // --- delimit string with double quotes. (FYI Double quotes don't work for MS Access)
+        return(chr(34) . trim($str) . chr(34));
+    }
+}
+?>

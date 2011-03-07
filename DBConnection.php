@@ -197,8 +197,9 @@ class DBConnection extends mysqli
         // If description is longer than 150 characters MySQL will throw a 'Data too long for column' error.
             $description = substr($description, 0, 150);
         }
+        $loginID = isset($_SESSION['loginTableID']) ? $_SESSION['loginTableID'] : 0;
         $this->query("INSERT INTO activity (Date, LoginTableID, SiteID, Description, ReferenceID, IPAddress) VALUES (
-                      NOW(), " . $_SESSION['loginTableID'] . ", $siteID, \"$description\", $referenceID, \"" . $_SERVER['REMOTE_ADDR'] . "\")",
+                      NOW(), $loginID, $siteID, \"$description\", $referenceID, \"" . $_SERVER['REMOTE_ADDR'] . "\")",
                       __FILE__, __LINE__);
     }
 

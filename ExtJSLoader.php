@@ -15,6 +15,9 @@ if(isset($_REQUEST['debug']))  { define("JSDEBUG", true); }
 //-----------------------------------------------------------------------------------
 function IncludeExtJSFiles()
 {
+// --- ExtJS doesn't currently support IE9. Force IE9 into IE8 compatibility mode until we
+// --- can add native support for IE9
+    echo "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=EmulateIE8\">";
 // ---- Ext stylesheet + Theme
     echo "<link rel='stylesheet' type='text/css' href='" . EXTBASE_URL . "resources/css/ext-all-notheme.css'>\n";
     echo "<link rel='stylesheet' type='text/css' href='" . SHAREDBASE_URL . "themes/css/xtheme-gray-wck.css'>\n";

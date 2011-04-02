@@ -196,9 +196,11 @@ li.list { margin-left: 20px; padding-left: 5px; }
 
 /* --- Safari: raise checkbox and box-label slightly */
 .ext-safari .x-form-check-wrap { line-height:16px }
+/* --- IE8: lower checkbox box-label slightly */
+.ext-ie8 .x-form-cb-label { top: 2px }
 /* --- IE7: lower checkbox and box-label slightly */
 .ext-ie7 .x-form-check-wrap { padding-top: 3px; line-height:16px }
-.ext-ie7 .x-form-cb-label { top: -1px }
+.ext-ie7 .x-form-cb-label { top: 0px }
 /* --- IE6: lower checkbox and box-label slightly */
 .ext-ie6 .x-form-check-wrap { padding-top: 2px; line-height:16px }
 .ext-ie6 .x-form-cb-label { top: 1px }

@@ -34,7 +34,7 @@ function IncludeExtJSFiles()
         echo "<script type='text/javascript' src='" . EXTBASE_URL . "adapter/ext/ext-base.js'></script>\n";
         echo "<script type='text/javascript' src='" . EXTBASE_URL . "ext-all.js'></script>\n";
     }
-    MinifyAndInclude(SHAREDBASE_DIR . "ExtHelpers.js");
+        echo "<script type='text/javascript' src='" . SHAREDBASE_URL . "ExtHelpers.js'></script>\n";
 // --- redefine BLANK_IMAGE_URL to point to a local image file
     echo "<script type='text/javascript'>Ext.BLANK_IMAGE_URL = '" . EXTBASE_URL . "resources/images/default/s.gif';</script>\n";
 }
@@ -70,36 +70,31 @@ function IncludeRowEditor()
 //  if JSDEBUG is defined, code will not be minified
 //
 //  PARAMETERS:
-//    String filename   - javascript file to include expressed as a relative
-//                        path/filename to the current page or as an absolute
-//                        system filename
+//    String filename   - javascript file to include, expressed as absolute
+//                        path and filename from the website root.
 //
 //  RETURN: none
 //-----------------------------------------------------------------------------------
 function MinifyAndInclude($filename)
 {
-    // Figure out original URL from filename. Take the full path to the file in the file system
-    // and subtract the path of the server root. This gives us the URL of the file relative
-    // to the server root. For relative paths this will be a no-op
-    $originalURL = str_replace($_SERVER["DOCUMENT_ROOT"], "", $filename);
-    // Figure out the js cache URL from JSCACHE_DIR (samme technique as above). By using the root
-    // domain name (i.e. ridenet.org), resorces loaded from this URL will be cached once and used
-    // for all the subdomains on ridenet.
     if(defined("JSDEBUG") || !defined("JSCACHE_DIR"))
     {
         // in debug mode (or if cache dir is not defined) link to original javascript file
-        echo "<script type='text/javascript' src='$originalURL'></script>\n";
+        echo "<script type='text/javascript' src='$filename'></script>\n";
     }
     else
     {
+        // By using the root domain name (i.e. ridenet.net), resorces loaded from this URL will be
+        // cached once and used for all the subdomains on ridenet.
         $jsCacheURL = GetFullDomainRoot() . str_replace($_SERVER["DOCUMENT_ROOT"], "", JSCACHE_DIR);
         $minfile = JSCACHE_DIR . basename($filename);
         $minurl = $jsCacheURL . basename($filename);
+        $fullPathAndFile = $_SERVER["DOCUMENT_ROOT"] . $filename;
         // Check js cache for minified version of file. If file does not exist or is
         // out of date, create a new minified version of the js file
-        if(!file_exists($minfile) || filemtime($filename) > filemtime($minfile))
+        if(!file_exists($minfile) || filemtime($fullPathAndFile) > filemtime($minfile))
         {
-            $minifiedJS = JSMin::minify(file_get_contents($filename));
+            $minifiedJS = JSMin::minify(file_get_contents($fullPathAndFile));
             if(file_put_contents($minfile, $minifiedJS))
             {
                 // add a link to the minified file to the page
@@ -109,7 +104,7 @@ function MinifyAndInclude($filename)
             {
                 // minification failed, add a link to the original file to the page and log warning
                 trigger_error("Failed to minify and cache $filename to $minfile", E_USER_WARNING);
-                echo "<script type='text/javascript' src='$originalURL'></script>\n";
+                echo "<script type='text/javascript' src='$filename'></script>\n";
             }
         }
         else

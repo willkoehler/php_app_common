@@ -256,8 +256,7 @@ function DetectBot()
                       "TechnoratiSnoop", "Rankivabot", "Mediapartners-Google", "Sogou web spider", "WebAlta Crawler", "YandexBot",
                       "Exabot", "NetcraftSurveyAgent", "TwengaBot", "PycURL", "Voyager", "Butterfly", "facebookexternalhit", "JS-Kit",
                       "Twitterbot", "bitlybot", "PostRank", "Jakarta", "LinkedInBot", "bingbot", "Huaweisymantecspider",
-                      "FunWebProducts", "KKman", "TweetmemeBot", "PeoplePal", "WebCapture", "SurveyBot", "ScoutJet", "BrowseX",
-                      "MJ12bot"); 
+                      "KKman", "TweetmemeBot", "PeoplePal", "WebCapture", "SurveyBot", "ScoutJet", "BrowseX", "MJ12bot"); 
 
     if(!isset($_SERVER['HTTP_USER_AGENT']))
     {

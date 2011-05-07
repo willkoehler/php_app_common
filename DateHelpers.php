@@ -88,6 +88,23 @@ function FirstOfWeek($dtDate)
 
 
 //----------------------------------------------------------------------------------
+//   MondayOfWeek()
+//
+//   This function takes a date and returns the date of Monday in the week
+//   containing the date.
+//
+//   PARAMETERS:
+//     $dtDate    - date to convert
+//
+//   RETURN: (DateTime) date of Monday in the specified week
+//-----------------------------------------------------------------------------------
+function MondayOfWeek($dtDate)
+{
+    return(AddDays($dtDate, -1 * ($dtDate->format("N")-1) ));
+}
+
+
+//----------------------------------------------------------------------------------
 //   FirstOfMonth()
 //
 //   This function takes a date and returns the date of the first day of the month.

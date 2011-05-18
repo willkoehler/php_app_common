@@ -201,6 +201,32 @@ function SmartGetDuration($name)
 }
 
 
+
+//----------------------------------------------------------------------------------
+//  CheckRequiredParameters()
+//
+//  Checks to see if required parameters were posted with the request. If required
+//  parameters are not present, the page terminates with a 400 Bad request code.
+//  This is primarily needed to handle bots scanning pages.
+//
+//  PARAMETERS:
+//    required    - array of required parameters
+//
+//  RETURN: none
+//-----------------------------------------------------------------------------------
+function CheckRequiredParameters($required)
+{
+    foreach($required AS $param)
+    {
+        if(!isset($_REQUEST[$param]))
+        {
+            header("HTTP/1.1 400 Bad Request");
+            exit();
+        }
+    }
+}
+
+
 //----------------------------------------------------------------------------------
 //  CheckLastModified()
 //
@@ -215,7 +241,7 @@ function SmartGetDuration($name)
 //  PARAMETERS:
 //    lastModified    - Unix timestamp of date & time this resource was last modified
 //
-//  RETURN: salt portion of the password
+//  RETURN: none
 //-----------------------------------------------------------------------------------
 function CheckLastModified($lastModified)
 {

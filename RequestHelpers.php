@@ -201,6 +201,33 @@ function SmartGetDuration($name)
 }
 
 
+//----------------------------------------------------------------------------------
+//  CheckLastModified()
+//
+//  Checks to see if the current resource has been modified since the browser cached
+//  it. If the resouce has not been modified, the function end the current script
+//  and returns a "304 Not Modified" header. Otherwise the function sets the
+//  Last-Modified header.
+//
+//  This function modifies the header and must be called before any output has been
+//  written
+//
+//  PARAMETERS:
+//    lastModified    - Unix timestamp of date & time this resource was last modified
+//
+//  RETURN: salt portion of the password
+//-----------------------------------------------------------------------------------
+function CheckLastModified($lastModified)
+{
+    if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'])==$lastModified)
+    {
+        header("HTTP/1.1 304 Not Modified");
+        exit;
+    }
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s", $lastModified) . " GMT");
+}
+
+
 define('SALT_LENGTH', 23);
 define('HASH_LENGTH', 40);
 //----------------------------------------------------------------------------------

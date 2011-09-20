@@ -35,7 +35,7 @@
 }
 
 .grid-button {
-    font: bold 9px arial, helvetica, sans-serif;
+    font: bold 9px arial, 'helvetica neue', helvetica, sans-serif;
     border: 2px outset #EEEEEE;
     padding: 1px 5px;
     background-color: #DDD;

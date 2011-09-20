@@ -399,7 +399,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-toolbar td,.x-toolbar span,.x-toolbar input,.x-toolbar div,.x-toolbar select,.x-toolbar label{
-    font:normal 11px arial, helvetica, sans-serif;
+    font:normal 11px arial, 'helvetica neue', helvetica, sans-serif;
 }
 
 .x-toolbar .x-item-disabled {

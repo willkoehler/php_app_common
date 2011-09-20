@@ -233,6 +233,10 @@ li.list { margin-left: 20px; padding-left: 5px; }
 .ext-gecko .x-btn-text {
     padding-bottom: 2px;
 }
+/* --- Safari (not chrome): move button text down to center with button image */
+.ext-safari .x-btn-text {
+    padding-top: 2px;
+}
 
 /* --- Safari/Chrome: Use smaller font for text fields in toolbars, grid, and tree */
 .ext-webkit .x-small-editor .x-form-text {

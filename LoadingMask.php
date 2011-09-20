@@ -20,21 +20,10 @@ function PageLoadingMask($message)
     <table id="page-loading" style="position:relative; top:250px; margin: 0 auto; border:1px solid #a3bad9; background:white" border=0 cellpadding=0 cellspacing=0>
       <tr height=35>
         <td style="padding-left:10px;"><img src="<?=SHAREDBASE_URL?>images/loading.gif"></td>
-        <td style="color:#003366; font:bold 13px arial; padding:0px 20px 0px 10px; text-align:left;"><?=$message?></td>
+        <td style="color:#003366; font:bold 13px arial,helvetica; padding:0px 20px 0px 10px; text-align:left;"><?=$message?></td>
       </tr>
     </table>
     </div>
 <?
 }
-
-
-
-/*    <table id="page-loading" style="margin: 0 auto;position:relative; top:250px; z-index:50001; border:1px solid #a3bad9; background:white" border=0 cellpadding=0 cellspacing=0>
-      <tr height=35>
-        <td style="padding-left:10px;"><img src="<?=SHAREDBASE_URL?>images/loading.gif"></td>
-        <td style="color:#003366; font:bold 13px arial; padding:0px 20px 0px 10px; text-align:left;"><?=$message?></td>
-      </tr>
-    </table>
-*/
-
 ?>

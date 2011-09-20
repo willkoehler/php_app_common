@@ -5,7 +5,7 @@
 }
 
 .session-message {
-    font: 11pt arial;
+    font: 11pt arial, helvetica, sans-serif;
     color: #6F0000;
     text-align: center;
     margin-bottom: 20pt;
@@ -35,7 +35,7 @@
 }
 
 .grid-button {
-    font: bold 9px arial;
+    font: bold 9px arial, helvetica, sans-serif;
     border: 2px outset #EEEEEE;
     padding: 1px 5px;
     background-color: #DDD;
@@ -51,7 +51,7 @@
 
 .form-status {
     padding:5px 0px 1px 0px;
-    font: 9pt arial;
+    font: 9pt arial, helvetica, sans-serif;
     text-align: center;
 }
 
@@ -61,18 +61,18 @@
 }
 
 .item-status-label {
-    font: bold 8pt arial;
+    font: bold 8pt arial, helvetica, sans-serif;
     padding: 1px 1px 1px 4px;
 }
 
 .item-status-desc {
-    font: 8pt arial;
+    font: 8pt arial, helvetica, sans-serif;
     padding: 2px;
     white-space: normal;
 }
 
 .security-description {
-    font: 8pt arial;
+    font: 8pt arial, helvetica, sans-serif;
     padding-top: 4px;
 }
 .ext-gecko .security-description {
@@ -236,7 +236,7 @@ li.list { margin-left: 20px; padding-left: 5px; }
 
 /* --- Safari/Chrome: Use smaller font for text fields in toolbars, grid, and tree */
 .ext-webkit .x-small-editor .x-form-text {
-    font:normal 11px arial, tahoma, helvetica, sans-serif;
+    font:normal 11px arial, helvetica, sans-serif;
     height: 14px !important;
 }
 .ext-webkit .x-small-editor .x-form-field-wrap .x-form-trigger {

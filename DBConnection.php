@@ -55,14 +55,58 @@ class DBConnection extends mysqli
     //  RETURN: TRUE on success or FALSE on failure. For SELECT, SHOW, DESCRIBE or
     //          EXPLAIN mysqli_query() will return a mysqli result object.
     //-----------------------------------------------------------------------------------
-    function query($sql, $file="", $line="")
+    function query($sql, $file=false, $line=false)
     {
         $result = parent::query($sql);    // call base class query function
-        if($file!="" && $line!="" && $this->errno)
+        if($file && $line && $this->errno)
         {
             trigger_error("SQL Error [" . $this->errno . "] Line $line of " . basename($file) . " : " . $this->error, E_USER_WARNING);
         }
         return($result);
+    }
+
+
+    //----------------------------------------------------------------------------------
+    //  GetRecords()
+    //
+    //  Execute a query and return the results as an array of associative array
+    //
+    //  PARAMETERS:
+    //    sql   - SQL statement
+    //    file  - the file where this function was called (use __FILE__)
+    //    line  - the line # where this function was called (use __LINE__)
+    //
+    //  RETURN: Results of the query as an associative array
+    //-----------------------------------------------------------------------------------
+    function GetRecords($sql, $file=false, $line=false)
+    {
+        $records = Array();
+        $rs = $this->query($sql, $file, $line);
+        while($record = $rs->fetch_assoc())
+        {
+          $records[] = $record;
+        }
+        $rs->free();
+        return($records);
+    }
+
+
+    //----------------------------------------------------------------------------------
+    //  GetRecord()
+    //
+    //  Execute a query and return the first record as an associative array
+    //
+    //  PARAMETERS:
+    //    sql   - SQL statement
+    //    file  - the file where this function was called (use __FILE__)
+    //    line  - the line # where this function was called (use __LINE__)
+    //
+    //  RETURN: Results of the query as an associative array
+    //-----------------------------------------------------------------------------------
+    function GetRecord($sql, $file=false, $line=false)
+    {
+        $records = $this->GetRecords($sql, $file, $line);
+        return($records[0]);
     }
 
 
@@ -75,7 +119,7 @@ class DBConnection extends mysqli
     //    field   - field to lookup
     //    table   - table to lookup in
     //    where   - where clause (without the WHERE) to filter results
-    //    default - value to return if matching row is found
+    //    default - value to return if matching row is not found
     //  
     //  RETURN: value of "field" in row matching "where" or value of default parameter if
     //          no row matched

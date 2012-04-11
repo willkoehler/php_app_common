@@ -35,7 +35,7 @@ function dtNumericToDate($iNumeric)
 //----------------------------------------------------------------------------------
 //   iGetQuarterFromMonth()
 //
-//   This function returns the quarter that a given month belongs to
+//   This function returns the quarter (one-based) that a given month belongs to
 //
 //  PARAMETERS:
 //    Int iMonth    - Month
@@ -68,6 +68,27 @@ function iGetQuarterFromMonth($iMonth)
             break;
     } 
 } 
+
+
+//----------------------------------------------------------------------------------
+//  PreviousQuarter()
+//
+//  This function returns the quarter/year of the quarter previous to given
+//  quarter and year
+//
+//  PARAMETERS:
+//    quarter   - reference quarter (zero-based)
+//    year      - reference year
+//    pquarter  - quarter value of previous quarter will be placed here (zero-based)
+//    pyear     - year value of previous quarter will be placed here
+//
+//  RETURN: none
+//-----------------------------------------------------------------------------------
+function PreviousQuarter($quarter, $year, &$pquarter, &$pyear)
+{
+    $pquarter = ($quarter==0) ? 3 : $quarter-1;
+    $pyear = ($quarter==0) ? $year-1 : $year;
+}
 
 
 //----------------------------------------------------------------------------------

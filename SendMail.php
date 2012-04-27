@@ -7,12 +7,9 @@ require_once "AWS-Credentials.php";     // (This file contains private keys and 
 //
 //  Sends email message using Amazon SES
 //
-//  NOTE: This function assumes connection to database has been previously
-//  established by calling OpenDataConnection()
-//
 //  PARAMETERS:
 //    to      - address to send email to. May contain multiple addresses separated by
-//              commas
+//              commas or semicolons
 //    subject - subject line of email
 //    body    - text for body of the email
 //    from    - address email will come from (will also be in reply-to field)
@@ -25,7 +22,7 @@ function SendMail($to, $subject, $body, $from)
   
     $ses = new SimpleEmailService($cAWSAccessKey, $cAWSSecretAccessKey);
     $m = new SimpleEmailServiceMessage();
-    $to = explode(',', $to);  // convert $to from comma separated list into array
+    $to = preg_split("/[;,]+/", $to);     // convert $to from comma/semicolon separated list into array
     foreach($to as $recipient)  $m->addTo(trim($recipient));
     $m->setFrom($from);
     $m->setSubject($subject);

@@ -9,20 +9,24 @@ if(isset($_REQUEST['debug']))  { define("JSDEBUG", true); }
 //
 //  Include files required for Ext
 //
-//  PARAMETERS: none
+//  PARAMETERS:
+//    includeCSS    - true = include ExtJS UI stylesheets. Defaults to true
 //
 //  RETURN: none
 //-----------------------------------------------------------------------------------
-function IncludeExtJSFiles()
+function IncludeExtJSFiles($includeCSS=true)
 {
 // --- ExtJS doesn't currently support IE9. Force IE9 into IE8 compatibility mode until we
 // --- can add native support for IE9
     echo "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=EmulateIE8\">\n";
-// ---- Ext stylesheet + Theme
-    echo "<link rel='stylesheet' type='text/css' href='" . EXTBASE_URL . "resources/css/ext-all-notheme.css'>\n";
-    echo "<link rel='stylesheet' type='text/css' href='" . SHAREDBASE_URL . "themes/css/xtheme-gray-wck.css'>\n";
-// --- Ext Fixes Stylesheet (must come after Ext stylesheet)
-    echo "<link rel='stylesheet' type='text/css' href='" . SHAREDBASE_URL . "ExtFixes.css'>";
+    if($includeCSS)
+    {
+    // ---- Ext stylesheet + Theme
+        echo "<link rel='stylesheet' type='text/css' href='" . EXTBASE_URL . "resources/css/ext-all-notheme.css'>\n";
+        echo "<link rel='stylesheet' type='text/css' href='" . SHAREDBASE_URL . "themes/css/xtheme-gray-wck.css'>\n";
+    // --- Ext Fixes Stylesheet (must come after Ext stylesheet)
+        echo "<link rel='stylesheet' type='text/css' href='" . SHAREDBASE_URL . "ExtFixes.css'>";
+    }
 // --- Ext javascript code and our helper code
     if(defined("JSDEBUG"))
     {

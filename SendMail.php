@@ -1,6 +1,5 @@
 <?
 require_once "AWS-SES.php";
-require_once "AWS-Credentials.php";     // (This file contains private keys and is not checked into source control)
 
 //----------------------------------------------------------------------------------
 //  SendMail()

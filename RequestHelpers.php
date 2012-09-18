@@ -592,4 +592,21 @@ function Plural($value, $singular, $plural="")
     $plural = ($plural=="") ? $singular . 's' : $plural;
     return ($value==1) ? "$value $singular" : "$value $plural";
 }
+
+
+//----------------------------------------------------------------------------------
+//  EscapeJavascript()
+//
+//  This function escapes escapes carriage returns and single and double quotes in
+//  a string so it can be embedded in javascript code.
+//
+//  PARAMETERS:
+//    string    - string to be escaped
+//
+//  RETURN: escaped version of the string
+//-----------------------------------------------------------------------------------
+function EscapeJavascript($string)
+{
+    return(preg_replace("/\r?\n/", "\\n", addslashes($string)));
+}
 ?>

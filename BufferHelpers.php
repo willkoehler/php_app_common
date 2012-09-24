@@ -7,6 +7,10 @@
 //  and then continue processing a long-running process silently in the background
 //  (such as sending a notification email)
 //
+//  IMPORTANT: Make sure gzip compression is not enabled for text/html on the
+//  server. gzip compression forces the server to buffer the entire response
+//  effectively neutralizing the commands below.
+//
 //  IMPORTANT: In IIS you must edit WINDOWS\system32\inetsrv\fcgiext.ini and
 //  add the line ResponseBufferLimit=0 to the [PHP] section. Otherwise FastCGI
 //  will do its own buffering effectively neutralizing the commands below. ob_start,

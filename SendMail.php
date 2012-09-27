@@ -27,6 +27,10 @@ function SendMail($to, $subject, $body, $from)
     $m->setSubject($subject);
     $m->setMessageFromString($body);
     $result = $ses->sendEmail($m);
+    if($result==false)
+    {
+      trigger_error("Failed to send email. SUBJECT: \"$subject\". TO: " . join(',', $to), E_USER_WARNING);
+    }
     return ($result==false) ? false : true;
 }
 

@@ -18,9 +18,15 @@ require_once "AWS-SES.php";
 function SendMail($to, $subject, $body, $from)
 {
     global $cAWSAccessKey, $cAWSSecretAccessKey;    // defined in AWS-Credentials.php
+    global $cRedirectEmailsTo;
   
     $ses = new SimpleEmailService($cAWSAccessKey, $cAWSSecretAccessKey);
     $m = new SimpleEmailServiceMessage();
+    if(isset($cRedirectEmailsTo))
+    {
+        $subject = "[$to] $subject";
+        $to = $cRedirectEmailsTo;
+    }
     $to = preg_split("/[;,]+/", $to);     // convert $to from comma/semicolon separated list into array
     foreach($to as $recipient)  $m->addTo(trim($recipient));
     $m->setFrom($from);

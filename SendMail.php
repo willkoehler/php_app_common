@@ -28,7 +28,11 @@ function SendMail($to, $subject, $body, $from)
         $to = $cRedirectEmailsTo;
     }
     $to = preg_split("/[;,]+/", $to);     // convert $to from comma/semicolon separated list into array
-    foreach($to as $recipient)  $m->addTo(trim($recipient));
+    foreach($to as $recipient)
+    {
+        $recipient = trim($recipient);
+        if($recipient) { $m->addTo($recipient); }
+    }
     $m->setFrom($from);
     $m->setSubject($subject);
     $m->setMessageFromString($body);

@@ -172,8 +172,16 @@ function IE5Check()
 //-----------------------------------------------------------------------------------
 function GetDomainRoot()
 {
-    $parts = array_reverse(explode(".", $_SERVER['HTTP_HOST']));
-    return($parts[1] . "." . $parts[0]);
+    $host = $_SERVER['HTTP_HOST'];
+    if(filter_var($host, FILTER_VALIDATE_IP))
+    {
+        return $host;   // This is an IP address, leave it alone
+    }
+    else
+    {
+        $parts = array_reverse(explode(".", $host));
+        return($parts[1] . "." . $parts[0]);
+    }
 } 
 
 

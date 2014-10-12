@@ -1,5 +1,7 @@
 <?
-require_once "AWS-SES.php";
+require_once('aws_ses/SimpleEmailService.php');
+require_once('aws_ses/SimpleEmailServiceMessage.php');
+require_once('aws_ses/SimpleEmailServiceRequest.php');
 
 //----------------------------------------------------------------------------------
 //  SendMail()

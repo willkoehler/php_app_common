@@ -140,10 +140,22 @@
     border-bottom: 1px dotted #3764A0;
 }
 
+/* --- SUBTLE GREY GROUP BORDER --- */
+/* --- create a subtle grey border below the group header in the grid GroupingView */
+.subtle-grey-group-border .x-grid-group-hd {
+    border-bottom: 1px dotted #AAA;
+}
+
 /* --- FINE GRID LINES --- */
 /* --- add fine lines to the bottom of each grid row */
 .fine-grid-lines .x-grid3-row {
 border-color:#FFF #FFF #DDD #FFF;
+}
+
+/* --- NO GRID LINES --- */
+/* --- render grid lines in white (preserving space but making them invisible) */
+.no-grid-lines .x-grid3-row {
+border-color:#FFF #FFF #FFF #FFF;
 }
 
 /* --- GROUP SUMMARY SHADING --- */

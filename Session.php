@@ -66,13 +66,13 @@ function StartSession()
         ini_set('session.save_path', $sessdir);
 
         // now we're ready to start the session
-        $start = microtime(true);                     // TEMP CODE to work on IIS slow session_start issue
+        // $start = microtime(true);                     // TEMP CODE to work on IIS slow session_start issue
         session_start();
-        $elapsed = (microtime(true)-$start) * 1000;   // TEMP CODE to work on IIS slow session_start issue
-        if($elapsed > 100)                            // TEMP CODE to work on IIS slow session_start issue
-        {                                             // TEMP CODE to work on IIS slow session_start issue
-            trigger_error("Slow Session Start: (" . number_format($elapsed) . " msec)", E_USER_NOTICE);   // TEMP CODE to work on IIS slow session_start issue
-        }                                             // TEMP CODE to work on IIS slow session_start issue
+        // $elapsed = (microtime(true)-$start) * 1000;   // TEMP CODE to work on IIS slow session_start issue
+        // if($elapsed > 100)                            // TEMP CODE to work on IIS slow session_start issue
+        // {                                             // TEMP CODE to work on IIS slow session_start issue
+        //     trigger_error("Slow Session Start: (" . number_format($elapsed) . " msec)", E_USER_NOTICE);   // TEMP CODE to work on IIS slow session_start issue
+        // }                                             // TEMP CODE to work on IIS slow session_start issue
 
         // If session parameter KeepOpen is set, keep session open after browser closes. Since
         // the session cookie has already been created at this point, we have to overwrite the

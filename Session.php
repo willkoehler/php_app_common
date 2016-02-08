@@ -249,6 +249,10 @@ function GetFullURL()
 //  DetectBot()
 //
 //  This function determines whether the current page request has come from a web bot
+//  To get a list of potential bot agents, parse the access_log file and group by
+//  agent string:
+//
+//  awk -F\" '{print $6}' access_log | sort | uniq -c | sort -fr
 //
 //  PARAMETERS: none
 //
@@ -265,7 +269,7 @@ function DetectBot()
                       "Exabot", "NetcraftSurveyAgent", "TwengaBot", "PycURL", "Voyager", "Butterfly", "facebookexternalhit", "JS-Kit",
                       "Twitterbot", "bitlybot", "PostRank", "Jakarta", "LinkedInBot", "bingbot", "Huaweisymantecspider",
                       "KKman", "TweetmemeBot", "PeoplePal", "WebCapture", "SurveyBot", "ScoutJet", "BrowseX", "MJ12bot",
-                      "SEOkicks", "DotBot"); 
+                      "SEOkicks", "DotBot", "SemrushBot", "SemrushBot", "AhrefsBot", "spbot", "MegaIndex"); 
 
     if(!isset($_SERVER['HTTP_USER_AGENT']))
     {

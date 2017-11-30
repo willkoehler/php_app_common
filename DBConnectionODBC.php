@@ -43,7 +43,7 @@ class DBConnection
     //
     //  RETURN: none
     //-----------------------------------------------------------------------------------
-    function DBConnection($dsn, $user, $pw)
+    function __construct($dsn, $user, $pw)
     {
         // Connect to database and check for errors
         $this->connection = odbc_pconnect($dsn, $user, $pw);

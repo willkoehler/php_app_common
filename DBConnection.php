@@ -19,7 +19,7 @@ class DBConnection extends mysqli
     //
     //  RETURN: none
     //-----------------------------------------------------------------------------------
-    function DBConnection($host, $user, $pw, $dbname)
+    function __construct($host, $user, $pw, $dbname)
     {
         // call base class constructor
         parent::__construct($host, $user, $pw, $dbname);

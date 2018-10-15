@@ -5,7 +5,7 @@
 // 4. destroy tooltip when row editor closes so it doesn't come back unexpectedly
 
 Ext.ux.grid.RowEditorWCK = Ext.extend(Ext.ux.grid.RowEditor, {
-    
+
     minHeight:10,   // *** WCK minHeight can be used to set minimum height for row editor
 
     verifyLayout: function(force){
@@ -31,7 +31,7 @@ Ext.ux.grid.RowEditorWCK = Ext.extend(Ext.ux.grid.RowEditor, {
             this.positionButtons();
         }
     },
-    
+
     initFields: function(){
         var cm = this.grid.getColumnModel(), pm = Ext.layout.ContainerLayout.prototype.parseMargins;
         this.removeAll(false);
@@ -74,7 +74,7 @@ Ext.ux.grid.RowEditorWCK = Ext.extend(Ext.ux.grid.RowEditor, {
             e.stopEvent();      // VERY IMPORTANT - Prevent browser from handling event because we are going to delete the control
         }
     },
-    
+
     stopMonitoring : function(){
         this.bound = false;
         if(this.tooltip){

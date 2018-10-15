@@ -120,7 +120,7 @@ class DBConnection extends mysqli
     //    table   - table to lookup in
     //    where   - where clause (without the WHERE) to filter results
     //    default - value to return if matching row is not found
-    //  
+    //
     //  RETURN: value of "field" in row matching "where" or value of default parameter if
     //          no row matched
     //-----------------------------------------------------------------------------------
@@ -147,7 +147,7 @@ class DBConnection extends mysqli
     //  PARAMETERS:
     //    table   - table to count records
     //    where   - where clause (without the WHERE) to select which records to count
-    //  
+    //
     //  RETURN: count of records
     //-----------------------------------------------------------------------------------
     function DBCount($table, $where)

@@ -28,7 +28,7 @@ function SmartGet($varName, $default="NULL")
         return($_GET[$varName]);
     }
     else
-    {      
+    {
         return($default);
     }
 }
@@ -297,7 +297,7 @@ function CheckPassword($pw, $hashsalt)
 {
     $salt = GetPasswordSalt($hashsalt);
     return(MakePasswordHash($pw, $salt) == $hashsalt);
-  
+
 }
 
 
@@ -404,7 +404,7 @@ function GetBrowserString($agent)
     $os = ($isWindows) ? "Windows" : (($isMac) ? "Mac" : (($isAir) ? "Air" : (($isLinux) ? "Linux" : "Other")));
     $version = ($isSafari2 || $isGecko2) ? "2" : (($isSafari3 || $isGecko3) ? "3" : (($isSafari4) ? "4" : (($isSafari5) ? "5" : (($isIE6) ? "6" : (($isIE7) ? "7" : (($isIE8) ? "8" : "0"))))));
     $browserString = $type . " " . $version . " - " . $os;
-    
+
     return($browserString);
 }
 
@@ -461,12 +461,12 @@ function ConvertToHTML($strText)
         {
             $strConverted .= $strText[$iCharPos];
             $iCharPos++;
-        } 
-    } 
+        }
+    }
     if ($bHasList)
     {
         $strConverted .= "</ul>";
-    } 
+    }
     return $strConverted;
 }
 

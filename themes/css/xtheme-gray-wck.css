@@ -46,7 +46,7 @@
     background-color: #eaeaea;
 }
 
-.x-color-palette em:hover, .x-color-palette span:hover{   
+.x-color-palette em:hover, .x-color-palette span:hover{
     background-color: #eaeaea;
 }
 
@@ -414,8 +414,8 @@ ul.x-tab-strip-bottom{
     background-image:url(../images/default/button/s-arrow-noline.gif);
 }
 
-.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split, .x-toolbar .x-btn-click .x-btn-mc em.x-btn-split, 
-.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split, .x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split 
+.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split, .x-toolbar .x-btn-click .x-btn-mc em.x-btn-split,
+.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split, .x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split
 {
     background-image:url(../images/default/button/s-arrow-o.gif);
 }
@@ -424,8 +424,8 @@ ul.x-tab-strip-bottom{
     background-image:url(../images/default/button/s-arrow-b-noline.gif);
 }
 
-.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split-bottom, .x-toolbar .x-btn-click .x-btn-mc em.x-btn-split-bottom, 
-.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split-bottom, .x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split-bottom 
+.x-toolbar .x-btn-over .x-btn-mc em.x-btn-split-bottom, .x-toolbar .x-btn-click .x-btn-mc em.x-btn-split-bottom,
+.x-toolbar .x-btn-menu-active .x-btn-mc em.x-btn-split-bottom, .x-toolbar .x-btn-pressed .x-btn-mc em.x-btn-split-bottom
 {
     background-image:url(../images/default/button/s-arrow-bo.gif);
 }
@@ -1348,7 +1348,7 @@ a.x-menu-item {
 
 .x-panel-header {
     color:#333;
-	font-weight:bold; 
+	font-weight:bold;
     font-size: 11px;
     font-family: tahoma,arial,verdana,sans-serif;
     border-color:#d0d0d0;
@@ -1505,7 +1505,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
     background-color: #E0E0E0;
 }
 /* ie6 color is different because ie6 doesn't support transparancy */
-body.x-body-masked.ext-ie6 .x-window-plain .x-window-mc { 
+body.x-body-masked.ext-ie6 .x-window-plain .x-window-mc {
     background-color: #EAEAEA;
 }
 .x-html-editor-wrap {

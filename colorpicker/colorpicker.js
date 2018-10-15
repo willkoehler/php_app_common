@@ -17,7 +17,7 @@ Ext.namespace( 'Ext.ux' );
  */
 Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
     opacity:true,
-    
+
     /**
      *
      */
@@ -70,7 +70,7 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
             'cls': 'x-cp-huepicker'
         },true);
         // Create Opacity Picker
-        if (this.opacity) {         
+        if (this.opacity) {
             this.opacityEl = Ext.DomHelper.append( this.body, {
                 'id': this.cpGetId( 'opacity' ),
                 'cls': 'x-cp-opacitypicker'
@@ -89,7 +89,7 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
         }, this);
         // initialize start position
         Ext.get( this.hueSliderEl ).moveTo( this.hueEl.getLeft() - 3, this.hueEl.getTop() - 7 );
-        
+
         // Initialize RGB Picker
         this.rgbSliderEl = Ext.DomHelper.append( this.rgbEl, { 'cls': 'x-cp-slider',id:this.cpGetId( 'rgbSlider' ) },true);
         // when mouse buttons is pressed down move rgbSlider within rgbEl to pick new color (WCK)
@@ -104,8 +104,8 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
         // initialize start position
         this.rgbSliderEl.moveTo( this.rgbEl.getLeft() - 7, this.rgbEl.getTop() - 7 );
         // Create color divs and Form elements
-        
-        if (this.opacity) { 
+
+        if (this.opacity) {
             // Initialize Opacity Picker DD
             this.opacitySliderEl = Ext.DomHelper.append( this.body, { 'cls': 'x-cp-slider' ,id:this.cpGetId( 'opacitySlider' ) },true);
             this.opacityDD = new Ext.dd.DD( this.opacitySliderEl.id, 'opacityPicker' );
@@ -115,14 +115,14 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
             this.opacityEl.on( 'mousedown', this.clickOpacityPicker.createDelegate( this ) );
             // initialize start position
             this.opacitySliderEl.moveTo( this.opacityEl.getRight() - 7, this.opacityEl.getTop() - 3 );
-            this.alpha=256;     
-        }               
-        
+            this.alpha=256;
+        }
+
         Ext.DomHelper.append( this.body, {
             'id': this.cpGetId( 'fCont' ),
             'cls': 'x-cp-formcontainer'
         }, true );
-                        
+
         this.formPanel = new Ext.form.FormPanel({
             renderTo:this.cpGetId( 'fCont' ),
             height: this.opacity ? 202 : 182,
@@ -250,12 +250,12 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
                         scope: this,
                         style:{
                             marginTop:'2px'
-                        }                                       
+                        }
                     }]
                 }]
             }]
         });
-        
+
         this.redCmp = Ext.getCmp( this.cpGetId( 'iRed' ) );
         this.greenCmp = Ext.getCmp( this.cpGetId( 'iGreen' ) );
         this.blueCmp = Ext.getCmp( this.cpGetId( 'iBlue' ) );
@@ -263,7 +263,7 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
         this.satCmp = Ext.getCmp( this.cpGetId( 'iSat' ) );
         this.valCmp = Ext.getCmp( this.cpGetId( 'iVal' ) );
         this.hexaCmp = Ext.getCmp( this.cpGetId( 'iHexa' ) );
-        
+
         this.redCmp.on( 'change', this.updateFromIRGB.createDelegate( this ) );
         this.greenCmp.on( 'change', this.updateFromIRGB.createDelegate( this ) );
         this.blueCmp.on( 'change', this.updateFromIRGB.createDelegate( this ) );
@@ -271,22 +271,22 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
         this.satCmp.on( 'change', this.updateFromIHSV.createDelegate( this ) );
         this.valCmp.on( 'change', this.updateFromIHSV.createDelegate( this ) );
         this.hexaCmp.on( 'change', this.updateFromIHexa.createDelegate( this ) );
-        
+
         this.previewEl = Ext.get( this.cpGetId( 'cColor' ) );
         this.opacityPreviewEl = Ext.get( this.cpGetId( 'cColorOpacity' ) );
         this.inverseButton = Ext.getCmp(this.cpGetId( 'cInverse' ));
         this.webSafeButton = Ext.getCmp(this.cpGetId( 'cWebSafe' ));
-        
-        Ext.DomHelper.append( this.body, {'tag':'br','cls':'x-cp-clearfloat'});     
+
+        Ext.DomHelper.append( this.body, {'tag':'br','cls':'x-cp-clearfloat'});
     },
-    
-    onDestroy : function(){     
+
+    onDestroy : function(){
         Ext.ux.ColorPicker.superclass.onDestroy.apply( this, arguments );
         Ext.destroyMembers(this,'formPanel','inverseButton','webSafeButton',
         'rgbEl','hueEl','opacityEl','rgbSliderEl','hueSliderEl','opacitySliderEl',
-        'previewEl','opacityPreviewEl','redCmp','greenCmp','blueCmp','hueCmp','satCmp','valCmp','hexaCmp');     
-    },  
-    
+        'previewEl','opacityPreviewEl','redCmp','greenCmp','blueCmp','hueCmp','satCmp','valCmp','hexaCmp');
+    },
+
     /**
      *
      */
@@ -386,11 +386,11 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
             this.satCmp.setValue( Math.round( this.HSV.s * 100 ) );
             this.valCmp.setValue( Math.round( this.HSV.v * 100 ) );
         }
-        
+
         var htmlC = this.rgbToHex( rgb );
         var websafeC = this.rgbToHex( websafe );
         var invertC = this.rgbToHex( invert );
-        
+
         this.previewEl.setStyle({
             'background': '#' + htmlC
         });
@@ -401,7 +401,7 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
             this.opacityEl.setStyle({'background-color':'#'+htmlC});
             Ext.getCmp( this.cpGetId( 'iOpacity' ) ).setValue(Math.round( this.alpha/2.56 ));
             this.opacityPreviewEl.applyStyles('opacity:'+(this.alpha/256));
-            
+
         }
         this.webSafeButton.cpColor=websafeC;
         this.inverseButton.cpColor = invertC;
@@ -431,7 +431,7 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
         this.hexaCmp.setValue(s.rgbHex);
         this.updateFromIHexa();
     },
-    
+
     splitAphaRgbHex : function(c) {
         if (this.opacity && /^[0-9a-fA-F]{8}$/.test(c)) {
             return {
@@ -447,7 +447,7 @@ Ext.ux.ColorPicker = Ext.extend( Ext.BoxComponent, {
             alpha:256
         }
     },
-    
+
     /**
      *
      */

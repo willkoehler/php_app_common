@@ -4,25 +4,25 @@ class DBResult
 {
     function __construct($result)
     {
-        $this->result = $result; 
+        $this->result = $result;
         $this->num_rows = odbc_num_rows($result);
     }
-    
+
     function fetch_array()
     {
         return(odbc_fetch_array($this->result));
     }
-    
+
     function fetch_object()
     {
         return(odbc_fetch_object($this->result));
     }
-    
+
     function free()
     {
         return(odbc_free_result($this->result));
     }
-  
+
 }
 
 
@@ -138,7 +138,7 @@ class DBConnection
     //    table   - table to lookup in
     //    where   - where clause (without the WHERE) to filter results
     //    default - value to return if matching row is found
-    //  
+    //
     //  RETURN: value of "field" in row matching "where" or value of default parameter if
     //          no row matched
     //-----------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ class DBConnection
     //  PARAMETERS:
     //    table   - table to count records
     //    where   - where clause (without the WHERE) to select which records to count
-    //  
+    //
     //  RETURN: count of records
     //-----------------------------------------------------------------------------------
     function DBCount($table, $where)

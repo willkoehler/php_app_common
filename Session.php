@@ -38,11 +38,11 @@ function StartSession()
     {
         // We need a custom session name to prevent different application's sessions from stomping on each other
         ini_set('session.name', SESSION_ID);
-        
+
         // --- Set session cookie's domain to the root domain (i.e. ridenet.org) so it will be valid for all
         // --- subdomains (i.e. echeloncycling.ridenet.org, cscc.ridenet.org, etc)
         session_set_cookie_params(0, "/", GetDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
-    
+
         // Set the garbage collector to SESSION_LIFETIME. Session files older than SESSION_LIFETIME will be
         // deleted when garbage collection runs. The session file timestamp is updated each time session_start()
         // is called. So sessions are only deleted after they have been idle for SESSION_LIFETIME
@@ -88,12 +88,12 @@ function StartSession()
             // set PHP session cookie to expire when browser closes
             setcookie(session_name(), session_id(), 0, "/", GetDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
         }
-    
+
         // When a session is writable, PHP locks the session file and blocks subsequent calls to session_start()
         // This can cause bottlenecks if we need to load several pages at the same time. By default we unlock
         // the session file. NOTE: This doesn't appear to help CPU load problems on IIS servers. Theoretically it
         // could be an issue, but for now I'm going to hold off until I have a concrete reason to do this. Even
-        // if I close the session here, the system still can pause on the call to session_start(). 
+        // if I close the session here, the system still can pause on the call to session_start().
     //    if(!defined('WRITEABLE_SESSION'))
     //    {
     //        session_write_close();
@@ -162,7 +162,7 @@ function IE5Check()
 //
 //   This function gets the root domain of the current page minus the protocol prefix
 //   That is the first two parts of the domain name. ex:
-//    
+//
 //    http://pattycacke.ridenet.org ==> ridenet.org
 //    https://www.videojobsys.com ==> videojobsys.com
 //
@@ -182,7 +182,7 @@ function GetDomainRoot()
         $parts = array_reverse(explode(".", $host));
         return($parts[1] . "." . $parts[0]);
     }
-} 
+}
 
 
 //----------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ function GetFullDomainRoot()
 {
     $strProtocol = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=="on") ? "https://" : "http://";
     return $strProtocol . GetDomainRoot();
-} 
+}
 
 
 //----------------------------------------------------------------------------------
@@ -225,7 +225,7 @@ function GetBaseHref()
         $baseHref .= $arrParts[$i] . "/";
     }
     return $baseHref;
-} 
+}
 
 
 //----------------------------------------------------------------------------------
@@ -260,7 +260,7 @@ function GetFullURL()
 //          the name of of the web bot
 //-----------------------------------------------------------------------------------
 function DetectBot()
-{ 
+{
     $botfound = false;
     $bot_list = array("Teoma", "alexa", "froogle", "Gigabot", "inktomi", "looksmart", "URL_Spider_SQL", "Firefly", "NationalDirectory",
                       "Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot", "crawler", "www.galaxy.com", "Googlebot", "Scooter",
@@ -269,7 +269,7 @@ function DetectBot()
                       "Exabot", "NetcraftSurveyAgent", "TwengaBot", "PycURL", "Voyager", "Butterfly", "facebookexternalhit", "JS-Kit",
                       "Twitterbot", "bitlybot", "PostRank", "Jakarta", "LinkedInBot", "bingbot", "Huaweisymantecspider",
                       "KKman", "TweetmemeBot", "PeoplePal", "WebCapture", "SurveyBot", "ScoutJet", "BrowseX", "MJ12bot",
-                      "SEOkicks", "DotBot", "SemrushBot", "SemrushBot", "AhrefsBot", "spbot", "MegaIndex"); 
+                      "SEOkicks", "DotBot", "SemrushBot", "SemrushBot", "AhrefsBot", "spbot", "MegaIndex");
 
     if(!isset($_SERVER['HTTP_USER_AGENT']))
     {
@@ -282,10 +282,10 @@ function DetectBot()
         {
             if(preg_match('/' . $bot . '/', $_SERVER['HTTP_USER_AGENT']))
             {
-                $botfound = $bot; 
+                $botfound = $bot;
             }
         }
-    
+
         // some rogue bots give themselves away by the query parameters
         if($botfound==false)
         {
@@ -295,6 +295,6 @@ function DetectBot()
             }
         }
     }
-    return $botfound; 
-} 
+    return $botfound;
+}
 ?>

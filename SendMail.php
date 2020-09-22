@@ -21,8 +21,12 @@ function SendMail($to, $subject, $body, $from)
 {
     global $cAWSAccessKey, $cAWSSecretAccessKey;    // defined in AWS-Credentials.php
     global $cRedirectEmailsTo;
-  
-    $ses = new SimpleEmailService($cAWSAccessKey, $cAWSSecretAccessKey);
+
+    $region_endpoint = SimpleEmailService::AWS_US_EAST_1;
+    $trigger_errors = true;
+    $signature_version = SimpleEmailService::REQUEST_SIGNATURE_V4;
+
+    $ses = new SimpleEmailService($cAWSAccessKey, $cAWSSecretAccessKey, $region_endpoint, $trigger_errors, $signature_version);
     $m = new SimpleEmailServiceMessage();
     if(isset($cRedirectEmailsTo))
     {

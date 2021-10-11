@@ -41,7 +41,7 @@ function StartSession()
 
         // --- Set session cookie's domain to the root domain (i.e. ridenet.org) so it will be valid for all
         // --- subdomains (i.e. echeloncycling.ridenet.org, cscc.ridenet.org, etc)
-        session_set_cookie_params(0, "/", GetCookieDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
+        session_set_cookie_params(0, "/", GetCookieDomainRoot(), is_ssl(), TRUE);
 
         // Set the garbage collector to SESSION_LIFETIME. Session files older than SESSION_LIFETIME will be
         // deleted when garbage collection runs. The session file timestamp is updated each time session_start()
@@ -81,12 +81,12 @@ function StartSession()
         if(isset($_SESSION['KeepOpen']) && $_SESSION['KeepOpen'])
         {
             // preserve PHP session cookie after browser closes by setting an expiration date
-            setcookie(session_name(), session_id(), time()+SESSION_LIFETIME, "/", GetCookieDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
+            setcookie(session_name(), session_id(), time()+SESSION_LIFETIME, "/", GetCookieDomainRoot(), is_ssl(), TRUE);
         }
         else
         {
             // set PHP session cookie to expire when browser closes
-            setcookie(session_name(), session_id(), 0, "/", GetCookieDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
+            setcookie(session_name(), session_id(), 0, "/", GetCookieDomainRoot(), is_ssl(), TRUE);
         }
 
         // When a session is writable, PHP locks the session file and blocks subsequent calls to session_start()
@@ -316,5 +316,26 @@ function DetectBot()
         }
     }
     return $botfound;
+}
+
+//----------------------------------------------------------------------------------
+//  is_ssl()
+//
+//  Based on Wordpress. See https://stackoverflow.com/a/7304239/935514
+//
+//  PARAMETERS: none
+//
+//  RETURN: true if request is running over a HTTPS connection
+//-----------------------------------------------------------------------------------
+function is_ssl() {
+    if ( isset($_SERVER['HTTPS']) ) {
+        if ( 'on' == strtolower($_SERVER['HTTPS']) )
+            return true;
+        if ( '1' == $_SERVER['HTTPS'] )
+            return true;
+    } elseif ( isset($_SERVER['SERVER_PORT']) && ( '443' == $_SERVER['SERVER_PORT'] ) ) {
+        return true;
+    }
+    return false;
 }
 ?>

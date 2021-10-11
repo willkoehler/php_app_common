@@ -41,7 +41,7 @@ function StartSession()
 
         // --- Set session cookie's domain to the root domain (i.e. ridenet.org) so it will be valid for all
         // --- subdomains (i.e. echeloncycling.ridenet.org, cscc.ridenet.org, etc)
-        session_set_cookie_params(0, "/", GetDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
+        session_set_cookie_params(0, "/", GetCookieDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
 
         // Set the garbage collector to SESSION_LIFETIME. Session files older than SESSION_LIFETIME will be
         // deleted when garbage collection runs. The session file timestamp is updated each time session_start()
@@ -81,12 +81,12 @@ function StartSession()
         if(isset($_SESSION['KeepOpen']) && $_SESSION['KeepOpen'])
         {
             // preserve PHP session cookie after browser closes by setting an expiration date
-            setcookie(session_name(), session_id(), time()+SESSION_LIFETIME, "/", GetDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
+            setcookie(session_name(), session_id(), time()+SESSION_LIFETIME, "/", GetCookieDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
         }
         else
         {
             // set PHP session cookie to expire when browser closes
-            setcookie(session_name(), session_id(), 0, "/", GetDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
+            setcookie(session_name(), session_id(), 0, "/", GetCookieDomainRoot(), NULL, TRUE);  // TRUE --> set HTTPOnly flag
         }
 
         // When a session is writable, PHP locks the session file and blocks subsequent calls to session_start()
@@ -202,6 +202,26 @@ function GetFullDomainRoot()
 {
     $strProtocol = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=="on") ? "https://" : "http://";
     return $strProtocol . GetDomainRoot();
+}
+
+
+//----------------------------------------------------------------------------------
+//   GetCookieDomainRoot()
+//
+//   This function gets the root domain to be used for the domain parameter of
+//   setcookie. That is the first two parts of the domain name without the port.
+//
+//    http://pattycacke.ridenet.org ==> ridenet.org
+//    https://www.videojobsys.com ==> videojobsys.com
+//    http://psiapps.test:8080 ==> psiapps.test
+//
+//   PARAMETERS: none
+//
+//   RETURN: the domain root
+//-----------------------------------------------------------------------------------
+function GetCookieDomainRoot()
+{
+    return(strtok(GetDomainRoot(), ':')); // remove port ":8080" - if present
 }
 
 

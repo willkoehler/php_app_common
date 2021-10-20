@@ -44,23 +44,22 @@ class DBConnection extends mysqli
     //  allows us to send MySQL messages to the browser on the development servers and
     //  send MySQL messages to the PHP error log on production servers
     //
-    //  if $file/$line parameters are missing, they will default to "" and this function
-    //  will not check for mysql errors.
-    //
     //  PARAMETERS:
-    //    sql   - SQL statement
-    //    file  - the file where this function was called (use __FILE__)
-    //    line  - the line # where this function was called (use __LINE__)
+    //    sql         - SQL statement
+    //    resultmode  - needed to match signature of mysqli::query
     //
     //  RETURN: TRUE on success or FALSE on failure. For SELECT, SHOW, DESCRIBE or
     //          EXPLAIN mysqli_query() will return a mysqli result object.
     //-----------------------------------------------------------------------------------
-    function query($sql, $file=false, $line=false)
+    function query($sql, $resultmode = NULL)
     {
-        $result = parent::query($sql);    // call base class query function
-        if($file && $line && $this->errno)
+        $result = parent::query($sql, $resultmode);    // call base class query function
+        if($this->errno)
         {
-            trigger_error("SQL Error [" . $this->errno . "] Line $line of " . basename($file) . " : " . $this->error, E_USER_WARNING);
+            error_log("SQL Error [" . $this->errno . "] " . $this->error);
+            error_log("Full SQL: $sql");
+            $e = new \Exception; // trick to get stacktrace https://stackoverflow.com/a/7039409/935514
+            error_log("Stack trace:\n" . $e->getTraceAsString());
         }
         return($result);
     }
@@ -73,15 +72,13 @@ class DBConnection extends mysqli
     //
     //  PARAMETERS:
     //    sql   - SQL statement
-    //    file  - the file where this function was called (use __FILE__)
-    //    line  - the line # where this function was called (use __LINE__)
     //
     //  RETURN: Results of the query as an associative array
     //-----------------------------------------------------------------------------------
-    function GetRecords($sql, $file=false, $line=false)
+    function GetRecords($sql)
     {
         $records = Array();
-        $rs = $this->query($sql, $file, $line);
+        $rs = $this->query($sql);
         while($record = $rs->fetch_assoc())
         {
           $records[] = $record;
@@ -98,14 +95,12 @@ class DBConnection extends mysqli
     //
     //  PARAMETERS:
     //    sql   - SQL statement
-    //    file  - the file where this function was called (use __FILE__)
-    //    line  - the line # where this function was called (use __LINE__)
     //
     //  RETURN: Results of the query as an associative array
     //-----------------------------------------------------------------------------------
-    function GetRecord($sql, $file=false, $line=false)
+    function GetRecord($sql)
     {
-        $records = $this->GetRecords($sql, $file, $line);
+        $records = $this->GetRecords($sql);
         return($records[0]);
     }
 
@@ -126,7 +121,7 @@ class DBConnection extends mysqli
     //-----------------------------------------------------------------------------------
     function DBLookup($field, $table, $where, $default="")
     {
-        $rs = $this->query("SELECT $field FROM $table WHERE $where", __FILE__, __LINE__);
+        $rs = $this->query("SELECT $field FROM $table WHERE $where");
         if(($record=$rs->fetch_array())==false)
         {
             return($default);
@@ -152,7 +147,7 @@ class DBConnection extends mysqli
     //-----------------------------------------------------------------------------------
     function DBCount($table, $where)
     {
-        $rs = $this->query("SELECT COUNT(*) AS Count FROM $table WHERE $where", __FILE__, __LINE__ );
+        $rs = $this->query("SELECT COUNT(*) AS Count FROM $table WHERE $where");
         if(($record=$rs->fetch_array())==false)
         {
             return(0);
@@ -187,7 +182,7 @@ class DBConnection extends mysqli
     //-----------------------------------------------------------------------------------
     function DumpToJSArray($sql)
     {
-        $rs = $this->query($sql, __FILE__, __LINE__);
+        $rs = $this->query($sql);
         $result = "[";
     // --- Loop through rows
         while($row = $rs->fetch_row())
@@ -243,8 +238,7 @@ class DBConnection extends mysqli
         }
         $loginID = isset($_SESSION['loginTableID']) ? $_SESSION['loginTableID'] : 0;
         $this->query("INSERT INTO activity (Date, LoginTableID, SiteID, Description, ReferenceID, IPAddress) VALUES (
-                      NOW(), $loginID, $siteID, \"$description\", $referenceID, \"" . $_SERVER['REMOTE_ADDR'] . "\")",
-                      __FILE__, __LINE__);
+                      NOW(), $loginID, $siteID, \"$description\", $referenceID, \"" . $_SERVER['REMOTE_ADDR'] . "\")");
     }
 
 

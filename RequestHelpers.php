@@ -42,14 +42,19 @@ function SmartGet($varName, $default="NULL")
 //   NULL, otherwise it returns the string stipped of leading and trailing spaces
 //   and delimited by quotes.
 //
+//   If a database connection is provided in oDB, the string is escaped using a
+//   database library function that's more thorough than addslashes(). This is
+//   needed to fully protect against SQL injection attacks.
+//
 //  PARAMETERS:
 //     name  - name of string variable to read
+//     oDB   - optional database connection.
 //
 //  RETURN: "NULL" if string is empty, otherwise string stipped of leading/trailing spaces
 //-----------------------------------------------------------------------------------
-function SmartGetString($name)
+function SmartGetString($name, $oDB=null)
 {
-    return PrepareStringForSQL(SmartGet($name));
+    return PrepareStringForSQL(SmartGet($name), $oDB);
 }
 
 

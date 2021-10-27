@@ -325,16 +325,16 @@ function PrepareDateForSQL($date)
 //   PrepareStringForSQL()
 //
 //   This function takes a string and prepares it to be used in a SQL statement.
-//   All double quotes in the string are replaced with single quotes, leading and
-//   trailing spaces are deleted, and the string is surrounded in double-quotes.
-//   If the string is empty then NULL is returned.
+//   Reserved characters are escaped with backslashes and the string is surrounded
+//   in double-quotes. If the string is empty then NULL is returned.
 //
 //  PARAMETERS:
 //     str   - string value to be fixed up for use in a SQL statement
+//     oDB   - (not used) needed to match signature in DBConnection.php
 //
 //  RETURN: fixed up string value
 //-----------------------------------------------------------------------------------
-function PrepareStringForSQL($str)
+function PrepareStringForSQL($str, $oDB=null)
 {
     if(strtoupper($str)=="NULL" || $str=="")
     {

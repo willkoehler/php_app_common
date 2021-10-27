@@ -302,16 +302,20 @@ function PrepareDateForSQL($date)
 //   PrepareStringForSQL()
 //
 //   This function takes a string and prepares it to be used in a SQL statement.
-//   All double quotes in the string are replaced with single quotes, leading and
-//   trailing spaces are deleted, and the string is surrounded in double-quotes.
-//   If the string is empty then NULL is returned.
+//   Reserved characters are escaped with backslashes and the string is surrounded
+//   in double-quotes. If the string is empty then NULL is returned.
+//
+//   If a database connection is provided in oDB, the string is escaped using a
+//   database library function that's more thorough than addslashes(). This is
+//   needed to fully protect against SQL injection attacks.
 //
 //  PARAMETERS:
 //     str   - string value to be fixed up for use in a SQL statement
+//     oDB   - optional database connection.
 //
 //  RETURN: fixed up string value
 //-----------------------------------------------------------------------------------
-function PrepareStringForSQL($str)
+function PrepareStringForSQL($str, $oDB=null)
 {
     if(strtoupper($str)=="NULL" || $str=="")
     {
@@ -321,7 +325,7 @@ function PrepareStringForSQL($str)
     {
     // --- add backslash prefix to all characters such as single quote, double quote,
     // --- and backslash that need to be escaped in mysql queries
-        $str = addslashes($str);
+        $str = ($oDB) ? $oDB->escape_string($str) : addslashes($str);
     // --- delimit string with double quotes. (FYI Double quotes don't work for MS Access)
         return(chr(34) . trim($str) . chr(34));
     }

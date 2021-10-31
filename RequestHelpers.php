@@ -614,4 +614,21 @@ function EscapeJavascript($string)
 {
     return(preg_replace("/\r?\n/", "\\n", addslashes($string)));
 }
+
+
+//----------------------------------------------------------------------------------
+//  h()
+//
+//  Short version of htmlspecialchars() for use in views. This is used to mitigate
+//  XSS exploits by replacing special characters &, <, >, etc with HTML entities
+//
+//  PARAMETERS:
+//    content  - content for the view - which may contain special characters
+//
+//  RETURN: content with special characters converted to HTML entities
+//-----------------------------------------------------------------------------------
+function h($content)
+{
+    return(htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401));
+}
 ?>
